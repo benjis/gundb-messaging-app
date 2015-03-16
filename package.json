@@ -1,0 +1,16 @@
+{
+	"name": "guydb-messaging-app",
+	"main": "express.js",
+	"description": "Example gundb messaging app"
+,	"version": "0.0.1"
+,	"engines": {
+		"node": "~>0.10.x"
+	}
+,	"dependencies": {
+		"express": "~>4.9.0",
+		"gun": "0.1.5"
+	}
+,	"scripts": {
+        "start": "node express.js"    
+  }
+}
