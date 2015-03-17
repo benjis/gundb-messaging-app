@@ -2,7 +2,7 @@
 	<body onload="ready()">
 		<h2>CHAT</h2>
 
-		<ul id="chat"></ul>
+		<ul id="chatBody"></ul>
     
     <label>Enter your name</label><input id="username" />
     <hr/>
@@ -13,30 +13,30 @@
     </form>
     
 		<script src="../gun.js"></script>
-    
 		<script>
 		function ready(){
 			var $ = document.querySelector.bind(document);
 			var gun = Gun(location.origin + '/gun').load('example/chat/data').set({});
-			
-      gun.on(function renderChat(val){
-				var chatHTML = '';
-        
-				for(key in val) {
-					if(!val[key] || key == '_') continue;
-          console.log(val[key]["text"]);
-					chatHTML += '<li style="width:400px;height:2em;">' +
-          (val[key]||'').toString().replace(/\</ig, '&lt;') + '</li>';
-				}
-        
-				$("#chat").innerHTML = chatHTML;
-			});
+      
+      gun.on(function(){ 
+        this.map(function(message, id){
+          if($("#chatID-" + id)){ 
+            return; 
+          } else {
+            var messageHTML = '';
+            messageHTML += '<li id="chatID-'+ id +'"><b>' + message.name +'</b> says: <br/>' 
+                           + message.text + '<br/> on: ' + message.created_at +'</li>'
+            $("#chatBody").innerHTML = $("#chatBody").innerHTML + messageHTML;
+          }
+        });
+      });
       
 			$("#chatForm").onsubmit = function(){
 				var id = randomId();
 				gun.path(id).set({
 				  "name": ($("#username").value||'noname').toString().replace(/\</ig, '&lt;'),
-          "text": ($("#chatInput").value||'').toString().replace(/\</ig, '&lt;')
+          "text": ($("#chatInput").value||'').toString().replace(/\</ig, '&lt;'),
+          "created_at": (new Date()).toString()
 				});
         
 				$("#chatInput").value = "";
