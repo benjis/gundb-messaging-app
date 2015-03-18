@@ -6,11 +6,11 @@ var app = express();
 
 var Gun = require('gun');
 var gun = Gun({
-	file: 'data.json',
 	s3: {
-		key: '', // AWS Access Key
-		secret: '', // AWS Secret Token
-		bucket: '' // The bucket you want to save into
+		key: process.env.AWS_ACCESS_KEY_ID,
+		secret: process.env.AWS_SECRET_ACCESS_KEY,
+		bucket: process.env.S3_BUCKET_NAME,
+    region: process.env.S3_BUCKET_REGION
 	}
 });
 

@@ -1,8 +1,8 @@
 <html>
-	<body onload="ready()">
-		<h2>CHAT</h2>
+  <body onload="ready()">
+    <h2>CHAT</h2>
 
-		<ul id="chatBody"></ul>
+    <ul id="chatBody"></ul>
     
     <label>Enter your name</label><input id="username" />
     <hr/>
@@ -12,11 +12,11 @@
       <button>Send</button>
     </form>
     
-		<script src="../gun.js"></script>
-		<script>
-		function ready(){
-			var $ = document.querySelector.bind(document);
-			var gun = Gun(location.origin + '/gun').load('example/chat/data').set({});
+    <script src="../gun.js"></script>
+    <script>
+    function ready(){
+      var $ = document.querySelector.bind(document);
+      var gun = Gun(location.origin + '/gun').load('example/chat/data').set({});
       
       gun.on(function(){ 
         this.map(function(message, id){
@@ -24,29 +24,38 @@
             return; 
           } else {
             var messageHTML = '';
+            var main = document.getElementById( 'chatBody' );
             messageHTML += '<li id="chatID-'+ id +'"><b>' + message.name +'</b> says: <br/>' 
                            + message.text + '<br/> on: ' + message.created_at +'</li>'
+            
             $("#chatBody").innerHTML = $("#chatBody").innerHTML + messageHTML;
+
+            //[].map.call( main.children, Object ).sort( function ( a, b ) {
+            //    return +a.id.match( /\d+/ ) - +b.id.match( /\d+/ );
+            //}).forEach( function ( elem ) {
+            //    main.appendChild( elem );
+            //});
+            //$("#chatBody").append(messageHTML);
           }
         });
       });
       
-			$("#chatForm").onsubmit = function(){
-				var id = randomId();
-				gun.path(id).set({
-				  "name": ($("#username").value||'noname').toString().replace(/\</ig, '&lt;'),
+      $("#chatForm").onsubmit = function(){
+        var id = randomId();
+        gun.path(id).set({
+          "name": ($("#username").value||'noname').toString().replace(/\</ig, '&lt;'),
           "text": ($("#chatInput").value||'').toString().replace(/\</ig, '&lt;'),
           "created_at": (new Date()).toString()
-				});
+        });
         
-				$("#chatInput").value = "";
-				return false;
-			};
-		}
+        $("#chatInput").value = "";
+        return false;
+      };
+    }
     
-		function randomId(){
-			return ''+(new Date()).getTime()+Math.round((Math.random()*1000));
-		}
-		</script>
-	</body>
+    function randomId(){
+      return ''+(new Date()).getTime()+Math.round((Math.random()*1000));
+    }
+    </script>
+  </body>
 </html>
